@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 import { styles } from "./style.js";
 
 function Transaction(props) {
@@ -11,7 +12,8 @@ function Transaction(props) {
     }
 
     return (
-      <View style={[styles.transaction, {backgroundColor: props.amount >= 0 ? 'green' : 'red'}]}>
+    <TouchableHighlight underlayColor="snow" onPress={() => props.navigation.navigate('Add transaction')}>
+      <View style={[styles.transaction, {backgroundColor: props.amount >= 0 ? '#88FF75' : '#FF7575'}]}>
         <View style={styles.leftSide}>
             <Text style={styles.category}>{props.category}</Text>
             <Text style={styles.description}>{props.description}</Text>
@@ -26,6 +28,7 @@ function Transaction(props) {
             <Text style={styles.account}>{props.amount >= 0 ? 'to: ' : 'from: '}{props.account}</Text>
         </View>
       </View>
+      </TouchableHighlight>
     )
 } 
 

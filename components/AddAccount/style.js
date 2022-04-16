@@ -5,7 +5,6 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-
     holder:{
         width: '100%',
         display: 'flex',
@@ -19,6 +18,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: windowWidth*0.9,
         marginBottom: windowHeight*0.02,
+        marginTop: windowHeight*0.02
     },
     toggleHolder:{
         display: 'flex',
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     toggleText:{
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         fontSize: windowHeight*0.03
     },
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         height: windowWidth*0.15,
         borderWidth: 1,
         borderRadius: 20,
-        color: 'black',
+        backgroundColor:'grey',
         fontWeight: 'bold',
         fontSize: windowHeight*0.03,
         display: 'flex',

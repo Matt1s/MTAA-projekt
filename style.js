@@ -7,7 +7,6 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
 app:{
-    backgroundColor: 'black',
     width: windowWidth,
     height: windowHeight,
     display: 'flex',
@@ -30,8 +29,17 @@ addButton:{
 },
 addButtonText:{
     fontSize: windowHeight*0.075,
-}
-   
+},
+/* MENU DRAWER */
+drawerHeader:{
+    height: windowHeight*0.2,
+},
+drawerMainList:{
+    height: windowHeight*0.7,
+},
+drawerFooter:{
+    height: windowHeight*0.2,
+},
 });
 
 export { styles }

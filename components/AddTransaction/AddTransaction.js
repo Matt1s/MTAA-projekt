@@ -5,7 +5,7 @@ import DropDown from '../DropDownPicker/DropDownPicker'
 import CheckBox from '@react-native-community/checkbox'
 import { styles } from "./style.js";
 
-class AddTransaction extends React.Component {
+export default class AddTransaction extends React.Component {
 
     constructor(props) {
         super(props);
@@ -16,9 +16,28 @@ class AddTransaction extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if(this.props.route.params) {
+            let params = this.props.route.params
+            this.setState({
+                amount: params.amount,
+                category: params.category,
+                timestamp: params.category,
+                description: params.description
+            })
+            if (params.amount >= 0){
+                this.setState({
+                    isCredit: true,
+                    isDebit: false
+                })
+            }
+        }
+        alert(JSON.stringify(this.props))
+    }
+
     toggleType(isTrue) {
         // toggle between credit and debit
-        if (isTrue) {
+        if (isTrue || this.props.amount >= 0) {
             this.setState({
                 isCredit: true,
                 isDebit: false
@@ -53,12 +72,12 @@ class AddTransaction extends React.Component {
                     Type of transaction
                 </Text>
                 <View style={styles.toggleHolder}>
-                    <TouchableHighlight style={[styles.toggle1, {backgroundColor: this.state.isCredit ? 'grey':'white'}]}  onPress={ () => this.toggleType(true) }>
+                    <TouchableHighlight underlayColor="snow" style={[styles.toggle1, {backgroundColor: this.state.isCredit ? 'grey':'white'}]}  onPress={ () => this.toggleType(true) }>
                         <Text style={styles.toggleText}>
                             Credit
                         </Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={[styles.toggle2, {backgroundColor: this.state.isDebit ? 'grey':'white'}]} onPress={() => this.toggleType(false)}>
+                    <TouchableHighlight underlayColor="snow" style={[styles.toggle2, {backgroundColor: this.state.isDebit ? 'grey':'white'}]} onPress={() => this.toggleType(false)}>
                         <Text style={styles.toggleText}>
                             Debit
                         </Text>
@@ -71,7 +90,7 @@ class AddTransaction extends React.Component {
                     Amount
                 </Text>
                 <TextInput style={styles.textInput} keyboardType='numeric'>
-
+                    {this.state.amount}
                 </TextInput>
             </View>
 
@@ -94,7 +113,7 @@ class AddTransaction extends React.Component {
                     Description
                 </Text>
                 <TextInput style={styles.textInput}>
-
+                    {this.state.description}
                 </TextInput>
             </View>
 
@@ -119,7 +138,7 @@ class AddTransaction extends React.Component {
             </View>
             : null}
 
-            <TouchableHighlight style={styles.confirmButton}>
+            <TouchableHighlight underlayColor="snow" style={styles.confirmButton}>
                 <Text style={styles.toggleText}>Confirm transaction</Text>
             </TouchableHighlight>
 
@@ -127,5 +146,3 @@ class AddTransaction extends React.Component {
     )
     }
 } 
-
-export default AddTransaction;

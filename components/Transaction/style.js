@@ -46,7 +46,7 @@ amount:{
 },
 
 account:{
-    fontSize: windowHeight*0.03,
+    fontSize: windowHeight*0.02,
     color: 'black',
     fontWeight: 'bold',
 },
@@ -54,12 +54,18 @@ account:{
 top: {
     position: 'relative',
     top: -windowHeight*0.02,
-    backgroundColor: 'grey',
+    backgroundColor: 'snow',
+    borderColor: 'black',
+    borderWidth: 1,
     color: 'black',
     width: windowWidth*0.2,
     padding: windowHeight*0.002,
-    height: windowHeight*0.025,
-    borderRadius: windowHeight*0.01
+    height: windowHeight*0.035,
+    borderRadius: windowHeight*0.01,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
 },
 
 timestamp:{

@@ -6,23 +6,92 @@ import Transactions from './components/Transactions/Transactions';
 import AddTransaction from './components/AddTransaction/AddTransaction';
 import Categories from './components/Categories/Categories';
 import Accounts from './components/Accounts/Accounts';
+import AccountDetails from './components/AccountDetails/AccountDetails';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import CallSupport from './components/CallSupport/CallSupport';
+import Logout from './components/Logout/Logout';
+import AddAccount from './components/AddAccount/AddAccount';
+import SpendingReport from './components/SpendingReport/SpendingReport';
+import RecurringTransactions from './components/RecurringTransactions/RecurringTransactions';
 import { styles } from './style';
 
 /* navigation stuff */
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 
 const Drawer = createDrawerNavigator();
+
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={styles.drawer}>
+        <View style={styles.drawerHeader}>
+          <Text style={styles.drawerHeaderUser}>Logged in as </Text>
+        </View>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Call support"
+          style={{backgroundColor: '#88FF75' }}
+          onPress={() => props.navigation.navigate('Call support')}
+          />
+        <DrawerItem style={{backgroundColor:'red'}}
+          label="Logout"
+          onPress={() => props.navigation.navigate('Logout')}
+        />
+      </View>
+    </DrawerContentScrollView>
+  );
+}
 
 function App() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Transactions">
+        <Drawer.Navigator initialRouteName="Login" drawerContent={(props) => <CustomDrawerContent {...props} />}
+        screenOptions={{
+        drawerStyle: {
+          backgroundColor: 'snow',
+          display: 'flex',
+          flexDirection:'column',
+        },
+      }}
+    >
           <Drawer.Screen  name="Transactions" component={Transactions} />
-          <Drawer.Screen  name="Add transaction" component={AddTransaction} />
           <Drawer.Screen  name="Categories" component={Categories} />
           <Drawer.Screen  name="Accounts" component={Accounts} />
+          <Drawer.Screen  name="Recurring transactions" component={RecurringTransactions} />
+          <Drawer.Screen  name="Spending report" component={SpendingReport} />
+          <Drawer.Screen name="Login" component={Login} 
+            options={{
+              drawerItemStyle: { height: 0 }
+            }}
+          />
+          <Drawer.Screen name="Register" component={Register} 
+            options={{
+              drawerItemStyle: { height: 0 }
+            }}
+          />
+          <Drawer.Screen  name="Add transaction" component={AddTransaction} 
+            options={{
+            drawerItemStyle: { height: 0 }
+          }}/>
+          <Drawer.Screen  name="Call support" component={CallSupport} 
+            options={{
+            drawerItemStyle: { height: 0 }
+          }}/>
+          <Drawer.Screen  name="Logout" component={Logout} 
+            options={{
+            drawerItemStyle: { height: 0 }
+          }}/>
+          <Drawer.Screen  name="Account details" component={AccountDetails} 
+            options={{
+            drawerItemStyle: { height: 0 }
+          }}/>
+          <Drawer.Screen  name="Add account" component={AddAccount} 
+            options={{
+            drawerItemStyle: { height: 0 }
+          }}/>
         </Drawer.Navigator>
       </NavigationContainer>
     );

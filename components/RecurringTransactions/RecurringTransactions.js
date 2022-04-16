@@ -3,7 +3,7 @@ import {View, Text, ScrollView, TouchableHighlight} from 'react-native';
 import Transaction from '../Transaction/Transaction';
 import { styles } from './style';
 
-export default function Transactions({navigation}) {
+export default function RecurringTransactions({navigation}) {
 
 
     return(

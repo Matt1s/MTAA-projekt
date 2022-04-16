@@ -25,7 +25,7 @@ addButton:{
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '1px solid black'
+    borderWidth: 1
 },
 addButtonText:{
     fontSize: windowHeight*0.075,

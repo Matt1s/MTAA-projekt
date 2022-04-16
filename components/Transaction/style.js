@@ -8,6 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
 transaction:{
+    borderWidth: 1,
     marginTop: windowHeight*0.02,
     width: windowWidth*0.9,
     height: windowHeight*0.1,

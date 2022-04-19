@@ -11,11 +11,23 @@ function Transaction(props) {
         typeColor = 'green';
     }
 
+    useEffect(() => {
+        props.navigation.setParams({
+            id: props.id,
+            edited: props.edited,
+            category: props.categoryName,
+            account: props.accountName,
+            amount: props.amount,
+            description: props.description,
+            date: props.date,
+        })
+    }, [])
+
     return (
     <TouchableHighlight underlayColor="snow" onPress={() => props.navigation.navigate('Add transaction')}>
       <View style={[styles.transaction, {backgroundColor: props.amount >= 0 ? '#88FF75' : '#FF7575'}]}>
         <View style={styles.leftSide}>
-            <Text style={styles.category}>{props.category}</Text>
+            <Text style={styles.category}>{props.categoryName}</Text>
             <Text style={styles.description}>{props.description}</Text>
         </View>
         <View style={styles.top}>
@@ -25,7 +37,7 @@ function Transaction(props) {
         </View>
         <View style={styles.rightSide}>
             <Text style={styles.amount}>{props.amount}€</Text>
-            <Text style={styles.account}>{props.amount >= 0 ? 'to: ' : 'from: '}{props.account}</Text>
+            <Text style={styles.account}>{props.amount >= 0 ? 'to: ' : 'from: '}{props.accountName}</Text>
         </View>
       </View>
       </TouchableHighlight>

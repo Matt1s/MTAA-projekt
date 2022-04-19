@@ -1,7 +1,7 @@
 
 import 'react-native-gesture-handler'
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import Transactions from './components/Transactions/Transactions';
 import AddTransaction from './components/AddTransaction/AddTransaction';
 import Categories from './components/Categories/Categories';
@@ -15,6 +15,8 @@ import AddAccount from './components/AddAccount/AddAccount';
 import SpendingReport from './components/SpendingReport/SpendingReport';
 import RecurringTransactions from './components/RecurringTransactions/RecurringTransactions';
 import { styles } from './style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 /* navigation stuff */
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,13 +24,17 @@ import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemLi
 
 const Drawer = createDrawerNavigator();
 
+function changePhoto() {
+  alert('change photo');
+}
 
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.drawer}>
         <View style={styles.drawerHeader}>
-          <Text style={styles.drawerHeaderUser}>Logged in as </Text>
+          <Text style={styles.drawerHeaderUser}>Logged in as {global.email}</Text>
+          <TouchableOpacity style={styles.photoHolder} onPress={() => changePhoto()}><Text style={{color: "black", textAlign:"center"}}>Upload photo</Text></TouchableOpacity>
         </View>
         <DrawerItemList {...props} />
         <DrawerItem
@@ -46,9 +52,10 @@ function CustomDrawerContent(props) {
 }
 
 function App() {
+
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Login" drawerContent={(props) => <CustomDrawerContent {...props} />}
+        <Drawer.Navigator email={AsyncStorage.getItem('email')} initialRouteName="Login" drawerContent={(props) => <CustomDrawerContent {...props} />}
         screenOptions={{
         drawerStyle: {
           backgroundColor: 'snow',

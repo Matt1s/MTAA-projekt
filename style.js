@@ -33,6 +33,10 @@ addButtonText:{
 /* MENU DRAWER */
 drawerHeader:{
     height: windowHeight*0.2,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent:'center',
+    alignItems:'center'
 },
 drawerMainList:{
     height: windowHeight*0.7,
@@ -40,6 +44,22 @@ drawerMainList:{
 drawerFooter:{
     height: windowHeight*0.2,
 },
+drawerHeaderUser:{
+    color: 'black',
+    marginTop: windowHeight*0.05,
+    textAlign: 'center',
+},
+photoHolder:{
+    width: windowWidth*0.2,
+    height: windowWidth*0.2,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent:'center',
+    alignItems:'center'
+
+}
 });
 
 export { styles }

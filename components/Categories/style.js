@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: 'bold',
         fontSize: windowHeight*0.03,
-        paddingLeft: windowWidth*0.05
+        paddingLeft: windowWidth*0.05,
+        backgroundColor:'white'
     },
     addButton:{
         position: 'absolute',

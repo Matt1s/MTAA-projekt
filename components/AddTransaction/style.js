@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     toggleText:{
         color: 'black',
         fontWeight: 'bold',
-        fontSize: windowHeight*0.03
+        fontSize: windowHeight*0.02
     },
 
     textInput:{
@@ -68,14 +68,40 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     confirmButton:{
-        width: windowWidth*0.9,
+        width: windowWidth*0.45,
+        height: windowWidth*0.15,
+        borderWidth: 1,
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        color: 'black',
+        fontWeight: 'bold',
+        display: 'flex',
+        backgroundColor: '#90EE90',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    confirmButtonOrig:{
+        width: windowWidth*0.90,
         height: windowWidth*0.15,
         borderWidth: 1,
         borderRadius: 20,
         color: 'black',
         fontWeight: 'bold',
-        fontSize: windowHeight*0.03,
         display: 'flex',
+        backgroundColor: '#90EE90',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    removeButton:{
+        width: windowWidth*0.45,
+        height: windowWidth*0.15,
+        borderWidth: 1,
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        color: 'black',
+        fontWeight: 'bold',
+        display: 'flex',
+        backgroundColor: '#FA8072',
         justifyContent: 'center',
         alignItems: 'center',
     },

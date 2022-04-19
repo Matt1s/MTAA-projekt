@@ -32,7 +32,7 @@ rightSide:{
     alignItems: 'flex-end',
 },
 category:{
-    fontSize: windowHeight*0.04,
+    fontSize: windowHeight*0.025,
     color: 'black',
     fontWeight: 'bold',
 },
@@ -70,7 +70,8 @@ top: {
 },
 
 timestamp:{
-    textAlign:'center'
+    textAlign:'center',
+    color: 'black'
 },
    
 });

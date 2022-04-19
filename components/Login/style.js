@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     },
     registerText:{
         marginTop: windowHeight*0.02,
-        marginBottom: windowHeight*0.02
+        marginBottom: windowHeight*0.02,
+        color: 'black'
     },
     button:{
         width: windowWidth*0.9,

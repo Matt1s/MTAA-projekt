@@ -1,7 +1,7 @@
 
 import 'react-native-gesture-handler'
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import Transactions from './components/Transactions/Transactions';
 import AddTransaction from './components/AddTransaction/AddTransaction';
 import Categories from './components/Categories/Categories';
@@ -16,6 +16,8 @@ import SpendingReport from './components/SpendingReport/SpendingReport';
 import RecurringTransactions from './components/RecurringTransactions/RecurringTransactions';
 import { styles } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 
 
 /* navigation stuff */
@@ -24,34 +26,92 @@ import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemLi
 
 const Drawer = createDrawerNavigator();
 
-function changePhoto() {
-  alert('change photo');
-}
+const createFormData = (photo, body = {}) => {
+  const data = new FormData();
 
-function CustomDrawerContent(props) {
-  return (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.drawer}>
-        <View style={styles.drawerHeader}>
-          <Text style={styles.drawerHeaderUser}>Logged in as {global.email}</Text>
-          <TouchableOpacity style={styles.photoHolder} onPress={() => changePhoto()}><Text style={{color: "black", textAlign:"center"}}>Upload photo</Text></TouchableOpacity>
-        </View>
-        <DrawerItemList {...props} />
-        <DrawerItem
-          label="Call support"
-          style={{backgroundColor: '#88FF75' }}
-          onPress={() => props.navigation.navigate('Call support')}
-          />
-        <DrawerItem style={{backgroundColor:'red'}}
-          label="Logout"
-          onPress={() => props.navigation.navigate('Logout')}
-        />
-      </View>
-    </DrawerContentScrollView>
-  );
-}
+  data.append('photo', {
+    name: photo.fileName,
+    type: photo.type,
+    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+  });
+
+  Object.keys(body).forEach((key) => {
+    data.append(key, body[key]);
+  });
+
+  return data;
+};
 
 function App() {
+
+  function CustomDrawerContent(props) {
+    return (
+      <DrawerContentScrollView {...props}>
+        <View style={styles.drawer}>
+          <View style={styles.drawerHeader}>
+            <Text style={styles.drawerHeaderUser}>Logged in as {global.email}</Text>
+            <TouchableOpacity style={styles.photoHolder} onPress={() => handleChoosePhoto()}><Text style={{color: "black", textAlign:"center"}}>Upload photo</Text></TouchableOpacity>
+            <Image style={styles.drawerHeaderPhoto} source={{uri: global.photo}} />
+          </View>
+          <DrawerItemList {...props} />
+          <DrawerItem
+            label="Call support"
+            style={{backgroundColor: '#88FF75' }}
+            onPress={() => props.navigation.navigate('Call support')}
+            />
+          <DrawerItem style={{backgroundColor:'red'}}
+            label="Logout"
+            onPress={() => props.navigation.navigate('Logout')}
+          />
+        </View>
+      </DrawerContentScrollView>
+    );
+  }
+
+  const [photo, setPhoto] = React.useState(null);
+
+  const handleChoosePhoto = () => {
+    launchImageLibrary({ noData: true }, (response) => {
+      // console.log(response);
+      if (response) {
+        setPhoto(response);
+        handleUploadPhoto();
+      }
+    });
+  };
+
+  async function handleUploadPhoto() {
+
+    let token = await AsyncStorage.getItem('token')
+    .then(value =>{
+        return JSON.parse(value)
+    })
+    let id = await AsyncStorage.getItem('id')
+    .then(value =>{
+        return JSON.parse(value)
+    })
+
+
+    axios.put(`http://budgetprogram.herokuapp.com/uploadPhoto/${id}`, {
+      headers: {
+        'Authorization': `bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+      params:{
+        imageFile: 'multipart'
+      },
+      data: createFormData(photo),
+    })
+      .then((response) => {
+        console.log('SUCCESS')
+        console.log('response', response);
+      })
+      .catch((error) => {
+        console.log('ERROR')
+        console.log('USER ID: ', id)
+        console.log(error);
+      });
+  };
 
     return (
       <NavigationContainer>

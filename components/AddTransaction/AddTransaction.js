@@ -207,7 +207,7 @@ export default function AddTransaction({navigation}, props) {
             </View>
             : null}
             <View style={styles.toggleHolder}>
-            {edited ? 
+            {!edited ? 
             <><TouchableHighlight underlayColor="snow" style={styles.removeButton} onPress={() => removeTransaction(transactionId)}>
                 <Text style={styles.toggleText}>Remove transaction</Text>
             </TouchableHighlight>

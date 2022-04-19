@@ -15,6 +15,7 @@ async function saveData(data, navigation){
     console.log('Logged in as: '+ JSON.stringify(data.email))
     navigation.navigate('Transactions')
 
+
     global.email = data.email
   } catch(e){
     console.log(e)
@@ -43,7 +44,7 @@ async function getToken(email, password, navigation) {
   .catch(function (error) {
     console.log(error)
     alert('Invalid email or password')
-  });
+  })
 }
 
 

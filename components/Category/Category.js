@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {View, Text} from 'react-native';
 import { styles } from './style';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -7,14 +7,14 @@ import {faTrashCan} from '@fortawesome/free-solid-svg-icons/faTrashCan'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class Category extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-        }
-    }
+function Category(props) {
 
-    deleteCategory = async (id) => {
+    useEffect(() => {
+        console.log('CATEGORY PROPS')
+        console.log(props)
+    }, [])
+
+    /*async function deleteCategory(id){
         let token = await AsyncStorage.getItem('token')
         .then(value =>{
             return JSON.parse(value)
@@ -35,16 +35,17 @@ export default class Category extends React.Component{
           console.log(error)
           console.log(error.response)
         })
-      }
+      }*/
 
-    render() {
         return (
-        <View style={styles.category}>
-            <Text style={styles.categoryText}>{this.props.name}</Text>
-            <TouchableHighlight style={styles.trash} underlayColor="snow" onPress={this.props.delete}>
+        <TouchableHighlight underlayColor="grey" onPress={() => props.navigation.navigate('Edit category', {name: props.name, id: props.id})}>
+            <View style={styles.category}>
+            <Text style={styles.categoryText}>{props.name}</Text>
+            <TouchableHighlight style={styles.trash} underlayColor="snow" onPress={props.delete}>
                 <FontAwesomeIcon icon={ faTrashCan } size={30} color="white" />
             </TouchableHighlight>
-        </View>
+            </View>
+        </TouchableHighlight>
         )
     }
-}
+export default Category

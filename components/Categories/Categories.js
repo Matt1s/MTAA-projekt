@@ -1,21 +1,28 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {View, Text, ScrollView, TouchableHighlight, TextInput} from 'react-native';
 import Category from '../Category/Category';
 import {styles} from './style'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class Categories extends React.Component{
+function Categories({navigation},props) {
 
-    constructor(props){
-        super(props)
-        this.state = {
-            inputName: '',
-            categories: []
-        }
-    }
+    const [categories, setCategories] = useState([])
+    const [name, setName] = useState('')
 
-    getCategories = async () => {
+    useEffect(() => {
+        getCategories()
+        const unsubscribe = navigation.addListener('focus', () => {
+            getCategories()
+        });
+    
+        return unsubscribe;
+      }, [navigation]);
+
+
+    
+
+    async function getCategories() {
         let categories = []
         let token = await AsyncStorage.getItem('token')
         .then(value =>{
@@ -45,21 +52,16 @@ export default class Categories extends React.Component{
           console.log(error)
         })
         .finally(() => {
-            this.setState({categories: categories})
+            setCategories(categories)
         });
       }
 
-    async componentDidMount(){
-        this.getCategories()
-    }
 
-    addCategory = async () => {
+    async function addCategory() {
         /* get current categories */
-        let categories = this.state.categories
+        let categoriesLocal = categories
         let newCategory = {}
-        let inputName = this.state.inputName
-        let newCategories = []
-        if(inputName.length > 0){
+        if(name.length > 0){
             let token = await AsyncStorage.getItem('token')
             .then(value =>{
                 return JSON.parse(value)
@@ -73,7 +75,7 @@ export default class Categories extends React.Component{
                 method: 'post',
                 url: `http://budgetprogram.herokuapp.com/api/category/${id}`,
                 headers: { 'Authorization': `bearer ${token}` },
-                name: inputName
+                name: name
               };
             
             axios.post(
@@ -83,15 +85,13 @@ export default class Categories extends React.Component{
             .then(function (response) {
             console.log('SUCCESS')
                 newCategory = {
-                    "name": inputName,
+                    "name": name,
                     "id": response.data.id,
                     "addedAt": response.data.addedAt
                 }
-                categories = categories.push(JSON.parse(newCategory))
+                categoriesLocal = categoriesLocal.push(JSON.parse(newCategory))
                 console.log('CURRENT CATEGORIES')
-                console.log(categories)
-                console.log('NEW CATEGORIES:')
-                console.log(newCategories)
+                setCategories(categoriesLocal)
             })
 
             .catch(function (error) {
@@ -100,15 +100,15 @@ export default class Categories extends React.Component{
             console.log('id', id);
             })
             .finally(() => {
-                this.getCategories()
+                getCategories()
             })
         } else {
             alert('Please enter a name')
         }
     }
 
-    deleteCategory = async (id) => {
-        let currCategories = this.state.categories
+    async function deleteCategory(id) {
+        let currCategories = categories
         let token = await AsyncStorage.getItem('token')
         .then(value =>{
             return JSON.parse(value)
@@ -130,17 +130,15 @@ export default class Categories extends React.Component{
           console.log(error)
           console.log(error.response)
         }).finally(() => {
-            this.setState({categories: currCategories})
+            setCategories(currCategories)
         });
-      }
+    }
 
-
-    render(){
         return (
             <>
             <ScrollView>
-                {this.state.categories ? this.state.categories.map((category, index) => {
-                    return <Category key={index} name={category.name} id={category.id} delete={() => this.deleteCategory(category.id)}/>
+                {categories ? categories.map((category, index) => {
+                    return <Category navigation={navigation} key={index} name={category.name} id={category.id} delete={() => deleteCategory(category.id)}/>
                 }) : console.log('No categories')}
             </ScrollView>
             <View style={styles.formGroup}>
@@ -148,15 +146,16 @@ export default class Categories extends React.Component{
                     Add new category
                 </Text>
                 <TextInput onChangeText={
-                    (inputName) => this.setState({inputName})
+                    (inputName) => setName(inputName)
                 } style={styles.textInput}>
                     
                 </TextInput>
             </View>
-            <TouchableHighlight underlayColor="grey" style={styles.addButton} onPress={() => this.addCategory()}>
+            <TouchableHighlight underlayColor="grey" style={styles.addButton} onPress={() => addCategory()}>
                 <Text style={styles.addButtonText}>+</Text>
             </TouchableHighlight>
             </>
         )
     }
-}
+
+export default Categories

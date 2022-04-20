@@ -63,14 +63,19 @@ export default function AddTransaction({navigation}, props) {
         }
     }
 
-    async function addTransaction(transactionId){
-
-        if( (isCredit || isDebit) && amount > 0) {
-            let amountNew = amount
-            if(isDebit) {
+    async function addTransaction(){
+        let amountNew
+        if( isCredit && amount > 0) {
+                amountNew = amount
+        }
+        else if(isDebit && amount > 0) {
                 amountNew = -amount
-            }
-            console.log('amount: ', amount)
+        } 
+        else {
+            alert('Please enter all data')
+            return
+        }
+        console.log('amount: ', amount)
         let token = await AsyncStorage.getItem('token')
         .then(value =>{
             return JSON.parse(value)
@@ -81,40 +86,21 @@ export default function AddTransaction({navigation}, props) {
             return JSON.parse(value)
         })
 
-        let config = {};
-
-        if(transactionId){
-            config = {
-                headers: { 'Authorization': `bearer ${token}` },
-                amount: amount,
-                method: 'put'
-            }
-        } else {
-            config = {
-                headers: { 'Authorization': `bearer ${token}` },
-                amount: amount,
-                method: 'post'
-            }
-        }
         axios.post(`http://budgetprogram.herokuapp.com/api/transaction/${account}/${category}`,
-            config
+            {headers: { 'Authorization': `bearer ${token}` },
+            amount: amountNew}
         )
         .then(function (response) {
         console.log('SUCCESS')
         console.log(response.status)
         })
-
         .catch(function (error) {
             console.log('amount', amount, 'accountId', account, 'categoryId', category)
         })
         .finally(() => {
             navigation.navigate('Transactions')
         })
-        } else {
-            alert('Please enter all data')
-        }
     }
-
     function handleAccount(account) {
         setAccount(account)
         console.log('changing account', account)

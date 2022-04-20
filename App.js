@@ -23,6 +23,7 @@ import DocumentPicker from 'react-native-document-picker';
 /* navigation stuff */
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import EditCategory from './components/EditCategory/EditCategory';
 const Drawer = createDrawerNavigator();
 
 
@@ -178,6 +179,10 @@ function App() {
             drawerItemStyle: { height: 0 }
           }}/>
           <Drawer.Screen  name="Add account" component={AddAccount} 
+            options={{
+            drawerItemStyle: { height: 0 }
+          }}/>
+          <Drawer.Screen  name="Edit category" component={EditCategory} 
             options={{
             drawerItemStyle: { height: 0 }
           }}/>

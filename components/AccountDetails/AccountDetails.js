@@ -46,9 +46,9 @@ function AccountDetails({navigation},props) {
       useEffect(() => {
           const unsubscribe = navigation.addListener('focus', () => {
             for(let i = 0; i<navigation.getState().routes.length; i++){
-                console.log('route: ',navigation.getState().routes[i])
                 if(navigation.getState().routes[i].name == "Account details"){
-
+                    console.log("=== ACCOUNT DETAILS ROUTES ===")
+                    console.log('route: ',navigation.getState().routes[i])
                     setName(navigation.getState().routes[i].params.account)
                     setAccountId(navigation.getState().routes[i].params.id)
                     setBalance(navigation.getState().routes[i].params.amount)
@@ -74,11 +74,11 @@ function AccountDetails({navigation},props) {
                 })}
             </ScrollView>
             <TouchableHighlight underlayColor="snow" style={styles.editAccount} onPress={() => navigation.navigate('Add account',{
-        edited: true,
-        balance: balance,
-        name: name,
-        id: accountId
-    })}>
+                edited: true,
+                balance: balance,
+                name: name,
+                id: accountId
+            })}>
                 <Text style={styles.editAccountText}>Edit account</Text>
             </TouchableHighlight>
         </>

@@ -22,20 +22,18 @@ export default function AddTransaction({navigation}, props) {
 
 
     useEffect(() => {
-        console.log('routes')
-        console.log(navigation.getState().routes)
+        const unsubscribe = navigation.addListener('focus', () => {
         for(let i = 0; i<navigation.getState().routes.length; i++){
-            console.log('route: ',navigation.getState().routes[i])
             if(navigation.getState().routes[i].name == "Add transaction"){
+                console.log("=== ADD TRANSACTION ROUTES ===")
+                console.log('route: ',navigation.getState().routes[i])
                 console.log('PARAMS')
                 console.log(navigation.getState().routes[i].params)
                 setTransactionId(navigation.getState().routes[i].params.id)
                 setEdited(navigation.getState().routes[i].params.edited)
                 console.log('Editing transaction: ',transactionId)
-
             }
         }
-        const unsubscribe = navigation.addListener('focus', () => {
 
         });
     
@@ -66,7 +64,7 @@ export default function AddTransaction({navigation}, props) {
     }
 
     async function addTransaction(transactionId){
-        /* get current categories */
+
         if( (isCredit || isDebit) && amount > 0) {
             let amountNew = amount
             if(isDebit) {
@@ -186,11 +184,15 @@ export default function AddTransaction({navigation}, props) {
                 <Text style={styles.formLabel}>
                     {isCredit ? 'To: ' : 'From: '}
                 </Text>
-                <DropDown style={{position: 'relative',zIndex: 5, elevation: 5}} type={"account"} handleChange={(account) => handleAccount(account)}/>
+                <View style={{position: 'relative',zIndex: 2000}}>
+                    <DropDown type={"account"} handleChange={(account) => handleAccount(account)}/>
+                </View>
                 <Text style={styles.formLabel}>
                     Category
                 </Text>
-                <DropDown type={"category"} handleChange={(category) => handleCategory(category)}/>
+                <View style={{position: 'relative',zIndex: 1000}}>
+                    <DropDown type={"category"} handleChange={(category) => handleCategory(category)}/>
+                </View>
             </View>
 
 

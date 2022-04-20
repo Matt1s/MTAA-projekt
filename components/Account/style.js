@@ -7,10 +7,11 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     accountHolder:{
-        height: windowHeight*0.1,
+        height: windowHeight*0.075,
         width: windowWidth*0.9,
         backgroundColor:'skyblue',
         margin: windowHeight*0.02,
+        marginBottom:0,
         borderRadius: 20,
         borderColor: 'black',
         borderWidth: 1,

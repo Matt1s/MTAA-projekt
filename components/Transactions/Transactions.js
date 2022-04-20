@@ -45,6 +45,7 @@ export default function Transactions({navigation}) {
             console.log(resStatus)
             /*console.log(JSON.stringify(response.data))*/
             transactions = response.data
+            console.log(response.data)
         })
         .catch(function (error) {
           console.log(error)

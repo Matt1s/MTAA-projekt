@@ -16,30 +16,32 @@ function AddAccount({navigation},props) {
     const [accountId, setAccountId] = useState(0)
 
     useEffect(() => {
-        console.log('routes')
-        console.log(navigation.getState().routes)
+        const unsubscribe = navigation.addListener('focus', () => {
         for(let i = 0; i<navigation.getState().routes.length; i++){
-            console.log('route: ',navigation.getState().routes[i])
             if(navigation.getState().routes[i].name == "Add account"){
+                console.log("=== ADD ACCOUNT ROUTES ===")
+                console.log('route: ',navigation.getState().routes[i])
                 try{
-                    console.log('PARAMS ADD ACCOUNT')
-                    console.log(navigation.getState().routes[i].params)
-                    setAccountId(navigation.getState().routes[i].params.id)
                     setEdited(navigation.getState().routes[i].params.edited)
-                    setBalance(navigation.getState().routes[i].params.balance)
-                    setName(navigation.getState().routes[i].params.name)
-                    console.log('Editing account: ',accountId)
-                    console.log(edited)
+                    if(navigation.getState().routes[i].params.edited){
+                        console.log(navigation.getState().routes[i].params)
+                        setAccountId(navigation.getState().routes[i].params.id)
+                        setBalance(navigation.getState().routes[i].params.balance)
+                        setName(navigation.getState().routes[i].params.name)
+                        console.log('Editing account: ',accountId)
+                    } else{
+                        setName('')
+                        setBalance(0)
+                        setAccountId(null)
+                        console.log('Adding new account')
+                    }
                 }
                 catch(e) {
                     null
                 }
             }
         }
-        const unsubscribe = navigation.addListener('focus', () => {
-
         });
-    
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
     }, [navigation]);
@@ -59,36 +61,36 @@ function AddAccount({navigation},props) {
             .then(value =>{
                 return JSON.parse(value)
             })
-            let id = await AsyncStorage.getItem('id')
-            .then(value =>{
-                return JSON.parse(value)
-            })
-
-            let name = name
+            let id = global.userId
+            console.log('USER ID',id)
 
             let config = {}
+            let postURL = `http://budgetprogram.herokuapp.com/api/account/${id}`
             let putURL = `http://budgetprogram.herokuapp.com/api/account/${accountId}`
             if(accountId) {
+                console.log('EDITING ACCOUNT')
                 config = {
                     method: 'put',
                     url: putURL,
                     headers: { 'Authorization': `bearer ${token}`,
                 'Content-type':'application/json' },
-                    "value": balance
+                    data:{"value": balance}
                   };
             } else {
+                console.log('ADDING NEW ACCOUNT')
             config = {
-                url: `http://budgetprogram.herokuapp.com/api/account/${id}`,
+                url: `${postURL}`,
+                method: 'post',
                 headers: { 'Authorization': `bearer ${token}` },
-                "name": name,
-                "value": balance
+                data:{"name": name,
+                "value": balance}
               };
             }
-            axios.post(
-                `http://budgetprogram.herokuapp.com/api/account/${id}`,
+            axios(
                 config
             )
             .then(function (response) {
+                console.log(postURL)
                 console.log('SUCCESS')
                 let resStatus = response.status
                 console.log(resStatus)
@@ -96,9 +98,9 @@ function AddAccount({navigation},props) {
             })
             .catch(function (error) {
                 console.log(error)
-            console.log(putURL)
+                console.log(postURL)
+                console.log(name, balance)
             console.log('ERROR EDITING ACCOUNT')
-            console.log('token', token);
             console.log('id', accountId);
             })
             .finally(() => {
@@ -135,6 +137,7 @@ function AddAccount({navigation},props) {
             })
             .catch(function (error) {
                 console.log('ERROR DELETING')
+                console.log(`http://budgetprogram.herokuapp.com/api/user/${id}/account/${accountId}`)
             console.log('token', token);
             console.log('id', id);
             })

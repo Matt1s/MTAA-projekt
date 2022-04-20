@@ -66,7 +66,7 @@ export default function Accounts({navigation}) {
                 return <Account navigation={navigation} key={index} name={account.name} id={account.id} amount={account.value} delete={() => deleteaccount(account.id)}/>
             }) : console.log('No accounts')}
         </ScrollView>
-        <TouchableHighlight underlayColor="snow" style={styles.addButton} onPress={() => navigation.navigate('Add account')}>
+        <TouchableHighlight underlayColor="snow" style={styles.addButton} onPress={() => navigation.navigate('Add account', {edited: false})}>
             <Text style={styles.addButtonText}>+</Text>
         </TouchableHighlight>
         </>

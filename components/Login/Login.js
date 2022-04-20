@@ -17,9 +17,40 @@ async function saveData(data, navigation){
 
 
     global.email = data.email
+    global.token = data.token
+    global.userId = data.id
   } catch(e){
     console.log(e)
+  } finally {
+    loadPhoto()
   }
+}
+
+async function loadPhoto(){
+  let imageUriLocal = ''
+  let token = global.token
+  let id = global.userId
+  var config = {
+    method: 'get',
+    url: `http://budgetprogram.herokuapp.com/userPhoto/${id}`,
+    headers: { 'Authorization': `bearer ${token}`,
+              'Content-Type':'image/jpg' },
+  };
+  axios(config)
+  .then(function (response) {
+    console.log('SUCCESS - photo loaded')
+      let byteArray = response.data
+      console.log(response)
+      console.log('length: ',byteArray.length)
+      imageUriLocal = `data:image/jpg;base64,${byteArray}`
+      console.log('length: ',imageUriLocal.length)
+      console.log(byteArray)
+      global.photo = imageUriLocal
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
+  
 }
 
 async function getToken(email, password, navigation) {

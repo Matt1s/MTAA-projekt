@@ -12,19 +12,20 @@ function Transaction(props) {
     }
 
     useEffect(() => {
-        props.navigation.setParams({
-            id: props.id,
-            edited: props.edited,
-            category: props.categoryName,
-            account: props.accountName,
-            amount: props.amount,
-            description: props.description,
-            date: props.date,
-        })
+
     }, [])
 
     return (
-    <TouchableHighlight underlayColor="snow" onPress={() => props.navigation.navigate('Add transaction')}>
+    <TouchableHighlight underlayColor="snow" onPress={() => props.navigation.navigate('Add transaction',
+    {
+        id: props.id,
+        edited: props.edited,
+        category: props.categoryName,
+        account: props.accountName,
+        amount: props.amount,
+        description: props.description,
+        date: props.date
+    })}>
       <View style={[styles.transaction, {backgroundColor: props.amount >= 0 ? '#88FF75' : '#FF7575'}]}>
         <View style={styles.leftSide}>
             <Text style={styles.category}>{props.categoryName}</Text>

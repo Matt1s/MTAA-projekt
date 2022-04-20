@@ -45,14 +45,16 @@ function AccountDetails({navigation},props) {
 
       useEffect(() => {
           const unsubscribe = navigation.addListener('focus', () => {
-            setName(navigation.getState().routes[0].params.account)
-            setAccountId(navigation.getState().routes[0].params.id)
-            setBalance(navigation.getState().routes[0].params.amount)
-            console.log('NAV: ', navigation)
-            console.log('NAV: ', navigation.getState())
-            console.log('ACC NAME: '+name)
-            console.log('ACC ID: '+accountId)
-            getAccountDetails(accountId)
+            for(let i = 0; i<navigation.getState().routes.length; i++){
+                console.log('route: ',navigation.getState().routes[i])
+                if(navigation.getState().routes[i].name == "Account details"){
+
+                    setName(navigation.getState().routes[i].params.account)
+                    setAccountId(navigation.getState().routes[i].params.id)
+                    setBalance(navigation.getState().routes[i].params.amount)
+                    getAccountDetails(accountId)
+                }
+            }
         });
         
         // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -71,7 +73,12 @@ function AccountDetails({navigation},props) {
                     )
                 })}
             </ScrollView>
-            <TouchableHighlight underlayColor="snow" style={styles.editAccount} onPress={() => navigation.navigate('Add account')}>
+            <TouchableHighlight underlayColor="snow" style={styles.editAccount} onPress={() => navigation.navigate('Add account',{
+        edited: true,
+        balance: balance,
+        name: name,
+        id: accountId
+    })}>
                 <Text style={styles.editAccountText}>Edit account</Text>
             </TouchableHighlight>
         </>

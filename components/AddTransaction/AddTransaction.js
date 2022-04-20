@@ -22,6 +22,19 @@ export default function AddTransaction({navigation}, props) {
 
 
     useEffect(() => {
+        console.log('routes')
+        console.log(navigation.getState().routes)
+        for(let i = 0; i<navigation.getState().routes.length; i++){
+            console.log('route: ',navigation.getState().routes[i])
+            if(navigation.getState().routes[i].name == "Add transaction"){
+                console.log('PARAMS')
+                console.log(navigation.getState().routes[i].params)
+                setTransactionId(navigation.getState().routes[i].params.id)
+                setEdited(navigation.getState().routes[i].params.edited)
+                console.log('Editing transaction: ',transactionId)
+
+            }
+        }
         const unsubscribe = navigation.addListener('focus', () => {
 
         });
@@ -31,9 +44,10 @@ export default function AddTransaction({navigation}, props) {
     }, [navigation]);
 
 
-    function toggleType(isTrue) {
+    function toggleType(value) {
+        console.log('isCredit: ',value)
         // toggle between credit and debit
-        if (isTrue || amount >= 0) {
+        if (value && amount >= 0) {
             setIsCredit(true)
             setIsDebit(false)
         } else {
@@ -51,7 +65,7 @@ export default function AddTransaction({navigation}, props) {
         }
     }
 
-    async function addTransaction(){
+    async function addTransaction(transactionId){
         /* get current categories */
         if( (isCredit || isDebit) && amount > 0) {
             let amountNew = amount
@@ -69,10 +83,21 @@ export default function AddTransaction({navigation}, props) {
             return JSON.parse(value)
         })
 
-        var config = {
-            headers: { 'Authorization': `bearer ${token}` },
-            amount: amount
-        };
+        let config = {};
+
+        if(transactionId){
+            config = {
+                headers: { 'Authorization': `bearer ${token}` },
+                amount: amount,
+                method: 'put'
+            }
+        } else {
+            config = {
+                headers: { 'Authorization': `bearer ${token}` },
+                amount: amount,
+                method: 'post'
+            }
+        }
         axios.post(`http://budgetprogram.herokuapp.com/api/transaction/${account}/${category}`,
             config
         )
@@ -103,7 +128,7 @@ export default function AddTransaction({navigation}, props) {
     }
 
     async function removeTransaction(transactionId){
-        console.log(transactionId)
+        console.log('deleting transaction id: ',transactionId)
         var config = {
             headers: { 'Authorization': `bearer ${token}` },
         };
@@ -207,11 +232,11 @@ export default function AddTransaction({navigation}, props) {
             </View>
             : null}
             <View style={styles.toggleHolder}>
-            {!edited ? 
+            {edited ? 
             <><TouchableHighlight underlayColor="snow" style={styles.removeButton} onPress={() => removeTransaction(transactionId)}>
                 <Text style={styles.toggleText}>Remove transaction</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor="snow" style={styles.confirmButton} onPress={() => addTransaction()}>
+            <TouchableHighlight underlayColor="snow" style={styles.confirmButton} onPress={() => addTransaction(transactionId)}>
                 <Text style={styles.toggleText}>Confirm transaction</Text>
             </TouchableHighlight>
             </>

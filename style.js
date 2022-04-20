@@ -58,8 +58,16 @@ photoHolder:{
     flexDirection: 'column',
     justifyContent:'center',
     alignItems:'center'
+},
+image:{
+    height: windowWidth*0.1,
+    width: windowWidth*0.1,
+    borderWidth: 2,
+    margin: 10,
+    borderRadius: windowWidth*0.05,
+    backgroundColor:'lime'
 
-}
+},
 });
 
 export { styles }

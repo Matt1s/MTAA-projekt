@@ -9,7 +9,7 @@ export default function RecurringTransactions({navigation}) {
     return(
         <View style={styles.transactions}>
             <ScrollView>
-                <Transaction navigation={navigation} category="Food" description="obed v eate" amount="2.20" account="Wallet" timestamp="today"/>
+                {/*<Transaction navigation={navigation} category="Food" description="obed v eate" amount="2.20" account="Wallet" timestamp="today"/>
                 <Transaction navigation={navigation} category="Payroll" amount="350" account="Tatrabanka" timestamp="yesterday"/>
                 <Transaction navigation={navigation} category="Food" description="obed v eate" amount="-1.70" account="Wallet" timestamp="today"/>
                 <Transaction navigation={navigation} category="Payroll" amount="350" account="Tatrabanka" timestamp="yesterday"/>
@@ -18,7 +18,7 @@ export default function RecurringTransactions({navigation}) {
                 <Transaction navigation={navigation} category="Food" description="obed v eate" amount="-1.70" account="Wallet" timestamp="today"/>
                 <Transaction navigation={navigation} category="Payroll" amount="350" account="Tatrabanka" timestamp="yesterday"/>
                 <Transaction navigation={navigation} category="Food" description="obed v eate" amount="-1.70" account="Wallet" timestamp="today"/>
-                <Transaction navigation={navigation} category="Payroll" amount="350" account="Tatrabanka" timestamp="yesterday"/>
+    <Transaction navigation={navigation} category="Payroll" amount="350" account="Tatrabanka" timestamp="yesterday"/>*/}
             </ScrollView>
             <TouchableHighlight underlayColor="snow" style={styles.addButton} onPress={() => navigation.navigate('Add transaction')}>
                 <Text style={styles.addButtonText}>+</Text>

@@ -27,11 +27,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: windowHeight*0.03,
         paddingLeft: windowWidth*0.05,
-        marginBottom: windowHeight*0.02
+        marginBottom: windowHeight*0.02,
+        color: 'black'
     },
     registerText:{
         marginTop: windowHeight*0.02,
-        marginBottom: windowHeight*0.02
+        marginBottom: windowHeight*0.02,
+        color: 'black'
     },
     button:{
         width: windowWidth*0.9,

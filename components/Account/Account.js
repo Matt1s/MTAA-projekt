@@ -6,15 +6,11 @@ import { styles } from './style';
 function Account(props){
 
     useEffect(() => {
-        props.navigation.setParams({
-            id: props.id,
-            name: props.name,
-            amount: props.amount,
-        })
+        
     }, [])
 
     return (
-    <TouchableHighlight underlayColor="snow" style={styles.accountHolder} onPress = { () => {props.navigation.navigate('Account details', props.id)}}>
+    <TouchableHighlight underlayColor="snow" style={styles.accountHolder} onPress = { () => {props.navigation.navigate('Account details', {id: props.id, amount: props.amount,account: props.name})}}>
         <>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styles.amount}>{props.amount}</Text>

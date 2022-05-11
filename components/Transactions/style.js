@@ -30,7 +30,13 @@ addButton:{
 addButtonText:{
     fontSize: windowHeight*0.075,
     color: 'white'
-}
+},
+imageHolder:{
+    width: windowWidth*0.18,
+    height: windowWidth*0.18,
+    borderRadius: windowWidth*0.09,
+    marginTop: windowHeight*0.01,
+},
    
 });
 

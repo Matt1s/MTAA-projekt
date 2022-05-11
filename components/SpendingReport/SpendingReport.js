@@ -1,31 +1,54 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TextInput, Text, TouchableHighlight, ScrollView} from 'react-native';
 import { styles } from './style';
 import DatePickerX from '../DatePicker/DatePicker';
 import PieChart from 'react-native-pie-chart';
 
-export default class SpendingReport extends React.Component{
+function SpendingReport({navigation},props) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showReport: false
-        }
-    }
-
-    fetchData() {
-        this.setState({
-            showReport: true
-        })
-    }
+    const [showReport, setShowReport] = useState(false)
     
-
-    render(){
 
         const widthAndHeight = 250
         const series = [123, 321, 123, 789, 537]
         const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
 
+    async function fetchData() {/*
+        let transactions = []
+        let token = await AsyncStorage.getItem('token')
+        .then(value =>{
+            return JSON.parse(value)
+        })
+        let id = await AsyncStorage.getItem('id')
+        .then(value =>{
+            return JSON.parse(value)
+        })
+  
+        const config = {
+            headers: { Authorization: `bearer ${token}` }
+        };
+        
+        axios.get(
+            `http://budgetprogram.herokuapp.com/api/transactions/${id}`,
+            config
+        )
+        .then(function (response) {
+          console.log('SUCCESS 1')
+            let resStatus = response.status
+            console.log(resStatus)
+            /*console.log(JSON.stringify(response.data))*/
+            /*transactions = response.data
+            console.log(response.data)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        .finally(() => {
+            setTransactions(transactions)
+            /*console.log(transactions)*/
+        /* });*/
+        setShowReport(true)
+    }
         return(
             <ScrollView contentContainerStyle={styles.holder}>
                 <View style={styles.formGroup}>
@@ -41,11 +64,11 @@ export default class SpendingReport extends React.Component{
                     </Text>
                     <DatePickerX/>
                 </View>
-                <TouchableHighlight underlayColor="snow" onPress={() => this.fetchData()} style={styles.confirmButton}>
-                    <Text style={styles.fetchDataText}>Show report</Text>
+                <TouchableHighlight underlayColor="snow" onPress={() => fetchData()} style={styles.confirmButton}>
+                    <Text style={[styles.fetchDataText,{color: 'grey'}]}>Show report</Text>
                 </TouchableHighlight>
 
-                {this.state.showReport && 
+                {showReport ?  
                 <View style={styles.reportsHolder}>
                     <Text style={styles.reportName}>Expenses</Text>
                     <PieChart
@@ -59,9 +82,9 @@ export default class SpendingReport extends React.Component{
                         series={series}
                         sliceColor={sliceColor}
                     />
-                </View>}
+                </View> : null}
             </ScrollView>
         )
     }
-}
+export default SpendingReport;
     

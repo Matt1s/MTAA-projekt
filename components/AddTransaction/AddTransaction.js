@@ -63,7 +63,7 @@ export default function AddTransaction({navigation}, props) {
         }
     }
 
-    async function addTransaction(){
+    async function addTransaction(transactionId){
         let amountNew
         if( isCredit && amount > 0) {
                 amountNew = amount
@@ -86,7 +86,7 @@ export default function AddTransaction({navigation}, props) {
             return JSON.parse(value)
         })
 
-        axios.post(`http://budgetprogram.herokuapp.com/api/transaction/${account}/${category}`,
+        /*axios.post(`http://budgetprogram.herokuapp.com/api/transaction/${account}/${category}`,
             {headers: { 'Authorization': `bearer ${token}` },
             amount: amountNew}
         )
@@ -99,7 +99,18 @@ export default function AddTransaction({navigation}, props) {
         })
         .finally(() => {
             navigation.navigate('Transactions')
-        })
+        })*/
+        let stompClient = global.stompClient
+        if(transactionId){
+            stompClient.send(`/app/putTransaction`, (JSON.stringify({"id":transactionId,"categoryId":category,"accountId":account,"amount":amountNew, "description":description, "isRecurring":isRecurring})))
+            console.log('EDITING TRANSACTION')
+        } else {
+            /* generate random number between 1000 and 1000000 */
+            let random = Math.floor(Math.random() * (1000000 - 1000 + 1)) + 1000
+            stompClient.send(`/app/postTransaction`, (JSON.stringify({"id":random, "categoryId":category, "accountId":account, "amount":amountNew, "description":description, "isRecurring":isRecurring})))
+            console.log('ADDED TRANSACTION')
+        }
+        navigation.navigate('Transactions')
     }
     function handleAccount(account) {
         setAccount(account)
@@ -112,28 +123,11 @@ export default function AddTransaction({navigation}, props) {
     }
 
     async function removeTransaction(transactionId){
-        console.log('deleting transaction id: ',transactionId)
-        var config = {
-            headers: { 'Authorization': `bearer ${token}` },
-        };
-        let token = await AsyncStorage.getItem('token')
-        .then(value =>{
-            return JSON.parse(value)
-        })
-        axios.delete(`http://budgetprogram.herokuapp.com/api/transaction/${transactionId}`,
-            config
-        )
-        .then(function (response) {
-        console.log('SUCCESS')
-        console.log(response.status)
-        })
+        let stompClient = global.stompClient
+        stompClient.send(`/app/deleteTransaction`, transactionId)
+        console.log('DELETING TRANSACTION')
 
-        .catch(function (error) {
-            console.log(error)
-        })
-        .finally(() => {
-            navigation.navigate('Transactions')
-        })
+        navigation.navigate('Transactions')
     }
 
     return (

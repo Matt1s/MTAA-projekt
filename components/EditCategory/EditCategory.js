@@ -5,6 +5,9 @@ import CheckBox from '@react-native-community/checkbox'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import SockJS from 'sockjs-client';
+import Stomp from "webstomp-client";
+
 
 
 function EditCategory({navigation},props) {
@@ -29,7 +32,7 @@ function EditCategory({navigation},props) {
         return unsubscribe;
     }, [navigation]);
 
-    async function saveCategory() {
+    /*function saveCategory() {
             let token = await AsyncStorage.getItem('token')
             .then(value =>{
                 return JSON.parse(value)
@@ -65,7 +68,29 @@ function EditCategory({navigation},props) {
             .finally(() => {
                 navigation.navigate('Categories')
             });
-    }
+    }*/
+
+    onConnected = () => {
+        console.log("onConnected");
+        
+        // Subscribe to the Public Topic
+        stompClient.subscribe("/topic/category", this.onMessageReceived);
+      
+        // Tell your username to the server
+        /*stompClient.send(
+          "/api/chat/addUser/1",
+          {},
+          JSON.stringify({ sender: "Ali", type: "JOIN" })
+        );*/
+      }
+
+    function saveCategory() {
+        let stompClient = global.stompClient
+        stompClient.send(`/app/putCategory`, (JSON.stringify({"name": name, "id": categoryId})))
+
+
+        navigation.navigate('Categories')  
+}
 
 
     return(

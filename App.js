@@ -40,8 +40,6 @@ function App() {
         return JSON.parse(value)
     })
 
-
-
     // Check if any file is selected or not
     if (singleFile != null) {
       // If file selected then create FormData
@@ -73,6 +71,7 @@ function App() {
       // If no file selected the show alert
       alert('Please Select File first');
     }
+    alert('Reload app to see changes');
   };
 
   const selectFile = async () => {
@@ -94,7 +93,7 @@ function App() {
       setSingleFile(res);
       console.log('RES:    ',res[0].uri)
       setTimeout(() => {
-        uploadImage(res[0].uri, res[0].type, res[0].name)}, 3000);
+        uploadImage(res[0].uri, res[0].type, res[0].name)}, 5000);
         
     } catch (err) {
       setSingleFile(null);
@@ -117,8 +116,8 @@ function App() {
         <View style={styles.drawer}>
           <View style={styles.drawerHeader}>
             <Text style={styles.drawerHeaderUser}>Logged in as {global.email}</Text>
-            <TouchableOpacity style={styles.photoHolder} onPress={() => selectFile()}><Text style={{color: "black", textAlign:"center"}}>Upload photo</Text></TouchableOpacity>
-            <Image style={styles.image} source={{uri: global.photo}} />
+            <TouchableOpacity style={[styles.photoHolder,{borderWidth: 5}]} onPress={() => selectFile()}><Image style={styles.imageHolder} source={{uri: global.photo}} /></TouchableOpacity>
+            <Text style={[styles.drawerHeaderUser,{marginTop:0}]}>Click to change image</Text>
           </View>
           <DrawerItemList {...props} />
           <DrawerItem

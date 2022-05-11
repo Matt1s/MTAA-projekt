@@ -5,11 +5,19 @@ import { styles } from './style';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import SockJS from 'sockjs-client';
+import Stomp from "webstomp-client";
+
+const URLweb = 'http://budgetprogram.herokuapp.com/'
+
 export default function Transactions({navigation}) {
 
     useEffect(() => {
+        connect()
+        getTransactions()
         const unsubscribe = navigation.addListener('focus', () => {
           getTransactions()
+          console.log('===== TRANSACTIONS FOCUSED =====')
         });
     
         // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -19,6 +27,29 @@ export default function Transactions({navigation}) {
     const [transactions, setTransactions] = useState([])
 
 
+    function connect() {
+        var socket = new SockJS(`${URLweb}stomp-endpoint`);
+        var stompClient = stompClient = Stomp.over(socket);
+        console.log('TRANSACTIONS CONNECT...')
+        stompClient.connect({}, function(frame) {
+          console.log('Connected: ' + frame);
+          stompClient.subscribe('/topic/transaction', function(message) {
+            console.log('SUBSCRIBED!')
+            console.log('Received transactions: ' + message.body);
+            let data = JSON.parse(message.body)
+
+            let newTransactions = transactions
+
+            console.log("data: statusCodeValue:",data["statusCodeValue"])
+            console.log("data: statusCodeValue:",data.statusCodeValue)
+
+            if ((data.statusCodeValue != 204 && data.statusCodeValue != 404) || data.statusCodeValue == undefined){
+                newTransactions.push(data)
+            }
+            getTransactions()
+        })
+    });
+    }
 
     async function getTransactions() {
         let transactions = []
@@ -32,11 +63,14 @@ export default function Transactions({navigation}) {
         })
   
         const config = {
-            headers: { Authorization: `bearer ${token}` }
+            headers: { Authorization: `bearer ${global.token}` },
+            params: {
+                'id': id
+            }
         };
         
         axios.get(
-            `http://budgetprogram.herokuapp.com/api/transactions/${id}`,
+            `http://budgetprogram.herokuapp.com/api/getTransactions`,
             config
         )
         .then(function (response) {
@@ -52,13 +86,9 @@ export default function Transactions({navigation}) {
         })
         .finally(() => {
             setTransactions(transactions)
-            /*console.log(transactions)*/
+            console.log("TRANSACTIONS:",transactions)
         });
     }
-
-    useEffect(() => {
-        getTransactions()
-    }, [])
 
     function getDays(timestamp){
         /* current date */
@@ -108,11 +138,11 @@ export default function Transactions({navigation}) {
 
     return(
         <View style={styles.transactions}>
-            <Image style={{width: 100, height: 100}} source={{uri: global.photo}}/>
-            <ScrollView>
+            <Image style={styles.imageHolder} source={{uri: global.photo}}/>
+            <ScrollView contentContainerStyle={styles.transactions} >
                 {transactions ? transactions.map((transaction, index) => {
                     let days = getDays(transaction.addedAt)
-                    console.log('single transaction: ',transaction['id'])
+                    console.log('single transaction: ',transaction)
                     return <Transaction id={transaction['id']} key={index} edited={true} navigation={navigation} categoryName={transaction.category.name} categoryId={transaction.category.id} description={transaction.description} amount={transaction.amount} accountName={transaction.account.name} accountId={transaction.account.id} timestamp={days}/>
                 }) : console.log('No categories')}
             </ScrollView>

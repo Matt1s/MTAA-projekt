@@ -16,7 +16,7 @@ function Transaction(props) {
     }, [])
 
     return (
-    <TouchableHighlight underlayColor="snow" onPress={() => props.navigation.navigate('Add transaction',
+    <TouchableHighlight underlayColor="snow" onLongPress={() => props.navigation.navigate('Add transaction',
     {
         id: props.id,
         edited: props.edited,

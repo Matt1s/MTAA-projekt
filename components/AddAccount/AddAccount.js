@@ -5,7 +5,10 @@ import CheckBox from '@react-native-community/checkbox'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import SockJS from 'sockjs-client';
+import Stomp from "webstomp-client";
 
+const URLweb = 'http://budgetprogram.herokuapp.com/'
 
 function AddAccount({navigation},props) {
 
@@ -57,7 +60,7 @@ function AddAccount({navigation},props) {
 
     async function addAccount(accountId) {
         /* get current categories */
-            let token = await AsyncStorage.getItem('token')
+            /*let token = await AsyncStorage.getItem('token')
             .then(value =>{
                 return JSON.parse(value)
             })
@@ -105,12 +108,25 @@ function AddAccount({navigation},props) {
             })
             .finally(() => {
                 navigation.navigate('Accounts')
-            });
+            });*/
+
+            let id = global.userId
+            let token = global.token
+            console.log('USER ID',id)
+    
+            let stompClient = global.stompClient
+            if(accountId) {
+                stompClient.send(`/app/putAccount`, (JSON.stringify({"value":balance, "id": accountId})))
+            } else {
+                stompClient.send(`/app/postAccount`, (JSON.stringify({"name": name, "value":balance, "id": id})))
+            //stompClient.send("/app/category/202",{name});
+        }
+        navigation.navigate('Accounts')  
     }
 
     async function deleteAccount(accountId) {
         /* get current categories */
-            let token = await AsyncStorage.getItem('token')
+            /*let token = await AsyncStorage.getItem('token')
             .then(value =>{
                 return JSON.parse(value)
             })
@@ -143,7 +159,13 @@ function AddAccount({navigation},props) {
             })
             .finally(() => {
                 navigation.navigate('Accounts')
-            });
+            });*/
+
+            let stompClient = global.stompClient
+
+            stompClient.send(`/app/user/deleteAccount`, accountId)
+            //stompClient.send("/app/category/202",{name});
+            navigation.navigate('Accounts') 
     }
 
 

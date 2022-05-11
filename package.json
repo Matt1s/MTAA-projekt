@@ -24,6 +24,7 @@
     "axios": "^0.26.1",
     "react": "17.0.2",
     "react-burger-menu": "^3.0.6",
+    "react-devtools": "^4.24.5",
     "react-native": "0.68.0",
     "react-native-date-picker": "^4.2.0",
     "react-native-document-picker": "^8.1.0",
@@ -37,7 +38,9 @@
     "react-native-stack": "^1.0.0-alpha11",
     "react-native-svg": "^12.3.0",
     "react-native-vector-icons": "^9.1.0",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "sockjs-client": "^1.6.0",
+    "webstomp-client": "^1.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

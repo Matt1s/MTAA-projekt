@@ -53,20 +53,17 @@ photoHolder:{
     width: windowWidth*0.2,
     height: windowWidth*0.2,
     backgroundColor: 'white',
-    borderWidth: 1,
+    borderWidth: 3,
+    borderRadius: windowWidth*0.1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent:'center',
     alignItems:'center'
 },
-image:{
-    height: windowWidth*0.1,
-    width: windowWidth*0.1,
-    borderWidth: 2,
-    margin: 10,
-    borderRadius: windowWidth*0.05,
-    backgroundColor:'lime'
-
+imageHolder:{
+    width: windowWidth*0.18,
+    height: windowWidth*0.18,
+    borderRadius: windowWidth*0.09,
 },
 });
 

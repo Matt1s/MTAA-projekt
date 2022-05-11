@@ -10,8 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function Category(props) {
 
     useEffect(() => {
-        console.log('CATEGORY PROPS')
-        console.log(props)
+        /*console.log('CATEGORY PROPS')
+        console.log(props)*/
     }, [])
 
     /*async function deleteCategory(id){
